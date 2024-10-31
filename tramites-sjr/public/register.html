@@ -8,47 +8,55 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
     <style>
-        form-container {
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body, html {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            background-color: #e9ecef;
+        }
+
+        #header, #footer {
+            color: #ffffff;
+            text-align: center;
             width: 100%;
-            max-width: 400px;
-            margin: auto;
+        }
+
+        #form-container {
+            flex: 1;
+            padding-top: 20px;
+            padding-bottom: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+        }
+
+        form {
+            width: 100%;
+            max-width: 700px;
+            background-color: #ffffff;
             padding: 20px;
             border-radius: 8px;
-            background-color: #f4f4f4;
-            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-            font-family: Arial, sans-serif;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
         }
 
         h2 {
-            text-align: center;
             margin-bottom: 20px;
+            font-size: 1.5em;
+            color: #495057;
         }
 
-        .file-group {
-            margin-bottom: 20px;
-            text-align: center;
+        .step {
+            display: none;
         }
 
-        .custom-file-label {
-            padding: 10px 20px;
-            background-color: #007bff;
-            color: #fff;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            margin-bottom: 10px;
-            font-size: 14px;
-        }
-
-        .file-preview {
-            margin-top: 10px;
-            text-align: center;
-        }
-
-        .file-preview img,
-        .file-preview iframe {
-            max-width: 100%;
-            height: auto;
+        .step.active {
+            display: block;
         }
 
         .button-group {
@@ -57,12 +65,12 @@
             margin-top: 20px;
         }
 
-        button {
+        .button-group button {
             padding: 10px 20px;
             border: none;
             border-radius: 5px;
-            cursor: pointer;
             font-size: 14px;
+            cursor: pointer;
         }
 
         .next-btn {
@@ -75,204 +83,182 @@
             color: #fff;
         }
 
-        input[type="file"] {
-            display: none;
-        }
-
-        .custom-file-upload {
-            display: inline-block;
-            padding: 6px 12px;
-            cursor: pointer;
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            font-size: 16px;
-            border-radius: 4px;
-        }
-
-        /* Style the button on hover */
-        .custom-file-upload:hover {
-            background-color: #45a049;
-        }
-
-        .modal {
-            display: none;
-            position: fixed;
-            z-index: 1000;
-            left: 0;
-            top: 0;
+        .table {
+            margin-bottom: 20px;
             width: 100%;
-            height: 100%;
-            overflow: auto;
-            background-color: rgba(0, 0, 0, 0.5);
-            align-items: center;
-            justify-content: center;
+            border: 1px solid #dee2e6;
+            background-color: #f8f9fa;
         }
 
-        .modal-content {
-            background-color: #fff;
-            padding: 20px;
+        .table td, .table th {
+            vertical-align: middle;
+            text-align: center;
+            padding: 8px;
+            border: 1px solid #dee2e6;
+        }
+
+        input[type="text"], input[type="date"], input[type="password"], input[type="email"], input[type="tel"], select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            margin-bottom: 20px;
+            border: 1px solid #ced4da;
             border-radius: 5px;
-            width: 90%;
-            max-width: 600px;
         }
 
-        .close-btn {
-            color: #aaa;
-            float: right;
-            font-size: 24px;
-            font-weight: bold;
-            cursor: pointer;
+        /* Ajustes para responsividad en móvil */
+        @media (max-width: 576px) {
+            form {
+                padding: 15px;
+            }
         }
     </style>
-    <link rel="stylesheet" href="css/styles.css">
 </head>
 
 <body>
-    <form id="stepperForm">
-        <div class="step">
-            <h2>Terminos y condiciones</h2>
-            <label for="terminos">Acepto los terminos y condiciones</label>
-            <input type="checkbox" name="terminos" id="terminos">
-            <div class="button-group">
-                <button class="next-btn" type="button" onclick="nextStep()">Siguiente</button>
-            </div>
-        </div>
-        <div class="step">
-            <h2>Datos personales</h2>
-            <input type="text" name="curp" placeholder="CURP">
-            <input type="text" name="verifica_curp" placeholder="Verifica tu CURP">
-            <input type="text" name="name" placeholder="Nombre">
-            <input type="text" name="ape_paterno" placeholder="Apellido">
-            <input type="text" name="ape_materno" placeholder="Segundo apellido">
-            <input type="date" name="fecha_nacimiento">
-            <input type="password" name="password" placeholder="contraseña">
-            <input type="password" name="verifica_password" placeholder="Verifica tu contraseña">
-            <div class="button-group">
-                <button type="button" class="prev-btn" onclick="prevStep()">Anterior</button>
-                <button type="button" class="next-btn" onclick="nextStep()">Siguiente</button>
-            </div>
+    <div id="header">Trámites Digitales</div>
 
-        </div>
-        <div class="step">
-            <h2>Direccion</h2>
-            <label>
-                Tipo de asentamiento:
+    <div id="form-container">
+        <form id="stepperForm">
+            <div class="step active">
+                <h2>Términos y condiciones</h2>
+                <label for="terminos">Acepto los términos y condiciones</label>
+                <input type="checkbox" name="terminos" id="terminos">
+                <div class="button-group">
+                    <button class="next-btn" type="button" onclick="nextStep()">Siguiente</button>
+                </div>
+            </div>
+            <div class="step">
+                <h2>Datos personales</h2>
+                <input type="text" name="curp" placeholder="CURP">
+                <input type="text" name="verifica_curp" placeholder="Verifica tu CURP">
+                <input type="text" name="name" placeholder="Nombre">
+                <input type="text" name="ape_paterno" placeholder="Apellido">
+                <input type="text" name="ape_materno" placeholder="Segundo apellido">
+                <input type="date" name="fecha_nacimiento" placeholder="Fecha de nacimiento">
+                <input type="password" name="password" placeholder="Contraseña">
+                <input type="password" name="verifica_password" placeholder="Verifica tu contraseña">
+                <div class="button-group">
+                    <button type="button" class="prev-btn" onclick="prevStep()">Anterior</button>
+                    <button type="button" class="next-btn" onclick="nextStep()">Siguiente</button>
+                </div>
+            </div>
+            <div class="step">
+                <h2>Dirección</h2>
+                <label>Tipo de asentamiento:</label>
                 <select name="tipo_asentamiento" id="tipo_asentamiento">
                     <option value="comunidad">Comunidad</option>
                     <option value="colonia">Colonia</option>
                 </select>
-            </label>
-            <input type="text" name="asentamiento" placeholder="Nombre localidad">
-            <input type="text" name="calle" placeholder="Calle">
-            <input type="text" name="numero_exterior" placeholder="Numero exterior">
-            <input type="text" name="numero_interior" placeholder="Numero interior">
-            <input type="text" name="codigo_postal" placeholder="Codigo postal">
-            <div class="button-group">
-                <button type="button" class="prev-btn" onclick="prevStep()">Anterior</button>
-                <button type="button" class="next-btn" onclick="nextStep()">Siguiente</button>
-            </div>
-        </div>
-        <div class="step">
-            <h2>Contacto</h2>
-            <input type="email" name="email" placeholder="Correo electronico">
-            <input type="email" name="verifica_email" placeholder="Verifica tu correo electronico">
-            <select name="tipo_telefono" id="tipo_telefono">
-                <option value="1">Casa</option>
-                <option value="2">Celular</option>
-                <option value="3">Trabajo</option>
-            </select>
-            <input type="tel" name="telefono" placeholder="Telefono">
-            <input type="tel" name="verifica_telefono" placeholder="Verifica tu telefono">
-            <div class="button-group">
-                <button type="button" class="prev-btn" onclick="prevStep()">Anterior</button>
-                <button type="button" class="next-btn" onclick="nextStep()">Siguiente</button>
-            </div>
-
-        </div>
-        <div class="step">
-            <div class=".form-container"></div>
-            <h2>Documentos</h2>
-            <table>
-                <tr>
-                    <td>INE</td>
-                    <td>
-                        <label class="custom-file-label" for="ine">Seleccionar</label>
-                        <input type="file" name="ine" id="ine" accept="image/*,application/pdf,text/plain" onchange="previewFile('ine')"></td>
-                    <td>
-                        <button type="button" onclick="openModal('ine')">Ver</button>
-                    </td>
-                    <td>
-                        <button type="button">Enviar</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        CURP
-                    </td>
-                    <td>
-                        <label class="custom-file-label" for="curp">Seleccionar</label>
-                        <input type="file" name="curp" id="curp" accept="image/*,application/pdf,text/plain" onchange="previewFile('curp')">
-                    </td>
-                    <td>
-                        <button type="button" onclick="openModal('curp')">Ver</button>
-                    </td>
-                    <td>
-                        <button type="button">Enviar</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Comprobante de dom.
-                    </td>
-                    <td>
-                        <label class="custom-file-label" for="comprobanteDomicilio">Seleccionar</label>
-                        <input type="file" name="comprobanteDomicilio" id="comprobanteDomicilio" accept="image/*,application/pdf,text/plain" onchange="previewFile('comprobanteDomicilio')">
-                    </td>
-                    <td>
-                        <button type="button" onclick="openModal('comprobanteDomicilio')">Ver</button>
-                    </td>
-                    <td>
-                        <button type="button">Enviar</button>
-                    </td>
-                </tr>
-                <tr>
-                    <td>
-                        Acta de nacimiento
-                    </td>
-                    <td>
-                        <label class="custom-file-label" for="acta">Seleccionar</label>
-                        <input type="file" name="acta" id="acta" accept="image/*,application/pdf,text/plain" onchange="previewFile('acta')">
-                    </td>
-                    <td>
-                        <button type="button" onclick="openModal('acta')">Ver</button>
-                    </td>
-                    <td>
-                        <button type="button">Enviar</button>
-                    </td>
-                </tr>
-            </table>
-            
-                <div id="modal" class="modal">
-                    <div class="modal-content">
-                        <span class="close-btn" onclick="closeModal()">&times;</span>
-                        <div id="modal-preview"></div>
-                    </div>
+                <input type="text" name="asentamiento" placeholder="Nombre localidad">
+                <input type="text" name="calle" placeholder="Calle">
+                <input type="text" name="numero_exterior" placeholder="Número exterior">
+                <input type="text" name="numero_interior" placeholder="Número interior">
+                <input type="text" name="codigo_postal" placeholder="Código postal">
+                <div class="button-group">
+                    <button type="button" class="prev-btn" onclick="prevStep()">Anterior</button>
+                    <button type="button" class="next-btn" onclick="nextStep()">Siguiente</button>
                 </div>
+            </div>
+            <div class="step">
+                <h2>Contacto</h2>
+                <input type="email" name="email" placeholder="Correo electrónico">
+                <input type="email" name="verifica_email" placeholder="Verifica tu correo electrónico">
+                <select name="tipo_telefono" id="tipo_telefono">
+                    <option value="1">Casa</option>
+                    <option value="2">Celular</option>
+                    <option value="3">Trabajo</option>
+                </select>
+                <input type="tel" name="telefono" placeholder="Teléfono">
+                <input type="tel" name="verifica_telefono" placeholder="Verifica tu teléfono">
+                <div class="button-group">
+                    <button type="button" class="prev-btn" onclick="prevStep()">Anterior</button>
+                    <button type="button" class="next-btn" onclick="nextStep()">Siguiente</button>
+                </div>
+            </div>
+            <div class="step">
+                <h2>Documentos</h2>
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Documento</th>
+                            <th>Subir archivo</th>
+                            <th>Acción</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>INE</td>
+                            <td><input type="file" name="ine" id="ine"></td>
+                            <td><button type="button" onclick="openModal('ine')">Ver</button></td>
+                        </tr>
+                        <tr>
+                            <td>CURP</td>
+                            <td><input type="file" name="curp_doc" id="curp_doc"></td>
+                            <td><button type="button" onclick="openModal('curp_doc')">Ver</button></td>
+                        </tr>
+                        <tr>
+                            <td>Comprobante de domicilio</td>
+                            <td><input type="file" name="comprobanteDomicilio" id="comprobanteDomicilio"></td>
+                            <td><button type="button" onclick="openModal('comprobanteDomicilio')">Ver</button></td>
+                        </tr>
+                        <tr>
+                            <td>Acta de nacimiento</td>
+                            <td><input type="file" name="actaNacimiento" id="actaNacimiento"></td>
+                            <td><button type="button" onclick="openModal('actaNacimiento')">Ver</button></td>
+                        </tr>
+                    </tbody>
+                </table>
                 <div class="button-group">
                     <button class="prev-btn" type="button" onclick="prevStep()">Anterior</button>
                     <button class="next-btn" type="button" onclick="nextStep()">Enviar documentos</button>
                 </div>
             </div>
+        </form>
+    </div>
 
-        </div>
-        <div class="step">
-            
-        </div>
-    </form>
-    <script src="js/main.js"></script>
+    <div id="footer">© 2024 Trámites Digitales</div>
+
+    <script>
+        let currentStep = 0;
+        const steps = document.querySelectorAll(".step");
+
+        function showStep(stepIndex) {
+            steps.forEach((step, index) => {
+                step.classList.toggle("active", index === stepIndex);
+            });
+        }
+
+        function nextStep() {
+            if (currentStep < steps.length - 1) {
+                currentStep++;
+                showStep(currentStep);
+            }
+        }
+
+        function prevStep() {
+            if (currentStep > 0) {
+                currentStep--;
+                showStep(currentStep);
+            }
+        }
+    </script>
+        <script>
+            fetch('../src/components/header.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('header').innerHTML = data;
+                })
+                .catch(error => console.error('Error al cargar el header:', error));
+    
+            fetch('../src/components/footer.html')
+                .then(response => response.text())
+                .then(data => {
+                    document.getElementById('footer').innerHTML = data;
+                })
+                .catch(error => console.error('Error al cargar el footer:', error));
+        </script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
-
 </body>
 
 </html>
