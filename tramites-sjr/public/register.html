@@ -5,6 +5,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Trámites Digitales</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
+
     <style>
         form-container {
             width: 100%;
@@ -155,12 +157,11 @@
         <div class="step">
             <h2>Direccion</h2>
             <label>
-                <input type="radio" name="tipo_asentamiento">
-                Comunidad
-            </label>
-            <label>
-                <input type="radio" name="tipo_asentamiento">
-                Colonia
+                Tipo de asentamiento:
+                <select name="tipo_asentamiento" id="tipo_asentamiento">
+                    <option value="comunidad">Comunidad</option>
+                    <option value="colonia">Colonia</option>
+                </select>
             </label>
             <input type="text" name="asentamiento" placeholder="Nombre localidad">
             <input type="text" name="calle" placeholder="Calle">
@@ -270,6 +271,7 @@
         </div>
     </form>
     <script src="js/main.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js"></script>
 
 </body>
 
