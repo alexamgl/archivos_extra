@@ -112,6 +112,49 @@
                 padding: 15px;
             }
         }
+        /* Estilos para los botones de elegir archivo y ver */
+input[type="file"] {
+    display: none; /* Ocultar el input de tipo file */
+}
+
+.custom-file-upload {
+    display: inline-block;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    background-color: #48b2e7; /* Color de fondo */
+    color: white; /* Color del texto */
+    border: 1px solid #48b2e7; /* Borde del botón */
+    transition: background-color 0.3s, border-color 0.3s; /* Transición suave */
+}
+
+.custom-file-upload:hover {
+    background-color: #36a0d4; /* Color de fondo al pasar el mouse */
+    border-color: #36a0d4; /* Borde al pasar el mouse */
+}
+
+.table td {
+    position: relative; /* Para posicionar el botón de ver */
+}
+
+.table button {
+    padding: 10px 15px;
+    border: none;
+    border-radius: 5px;
+    background-color: #6c757d; /* Color de fondo */
+    color: white; /* Color del texto */
+    cursor: pointer;
+    transition: background-color 0.3s; /* Transición suave */
+}
+.toast {
+    background-color: #f8d7da; /* Color de fondo */
+    color: #721c24; /* Color del texto */
+    border: 1px solid #f5c6cb; /* Borde */
+}
+
+.table button:hover {
+    background-color: #5a6268; /* Color de fondo al pasar el mouse */
+}
     </style>
 </head>
 
@@ -189,22 +232,42 @@
                     <tbody>
                         <tr>
                             <td>INE</td>
-                            <td><input type="file" name="ine" id="ine"></td>
+                            <td>
+                                <label class="custom-file-upload">
+                                    Elegir archivo
+                                    <input type="file" name="ine" id="ine">
+                                </label>
+                            </td>
                             <td><button type="button" onclick="openModal('ine')">Ver</button></td>
                         </tr>
                         <tr>
                             <td>CURP</td>
-                            <td><input type="file" name="curp_doc" id="curp_doc"></td>
+                            <td>
+                                <label class="custom-file-upload">
+                                    Elegir archivo
+                                    <input type="file" name="curp_doc" id="curp_doc">
+                                </label>
+                            </td>
                             <td><button type="button" onclick="openModal('curp_doc')">Ver</button></td>
                         </tr>
                         <tr>
                             <td>Comprobante de domicilio</td>
-                            <td><input type="file" name="comprobanteDomicilio" id="comprobanteDomicilio"></td>
+                            <td>
+                                <label class="custom-file-upload">
+                                    Elegir archivo
+                                    <input type="file" name="comprobanteDomicilio" id="comprobanteDomicilio">
+                                </label>
+                            </td>
                             <td><button type="button" onclick="openModal('comprobanteDomicilio')">Ver</button></td>
                         </tr>
                         <tr>
                             <td>Acta de nacimiento</td>
-                            <td><input type="file" name="actaNacimiento" id="actaNacimiento"></td>
+                            <td>
+                                <label class="custom-file-upload">
+                                    Elegir archivo
+                                    <input type="file" name="actaNacimiento" id="actaNacimiento">
+                                </label>
+                            </td>
                             <td><button type="button" onclick="openModal('actaNacimiento')">Ver</button></td>
                         </tr>
                     </tbody>
@@ -215,6 +278,15 @@
                 </div>
             </div>
         </form>
+    </div>
+    <div id="toast" class="toast" style="position: fixed; top: 20px; right: 20px; z-index: 1050; display: none;">
+        <div class="toast-header">
+            <strong class="me-auto">Advertencia</strong>
+            <button type="button" class="btn-close" onclick="hideToast()"></button>
+        </div>
+        <div class="toast-body">
+            Completa todos los campos requeridos.
+        </div>
     </div>
 
     <div id="footer">© 2024 Trámites Digitales</div>
@@ -230,11 +302,38 @@
         }
 
         function nextStep() {
-            if (currentStep < steps.length - 1) {
-                currentStep++;
-                showStep(currentStep);
-            }
+    const currentInputs = steps[currentStep].querySelectorAll('input, select');
+    let allFilled = true;
+
+    currentInputs.forEach(input => {
+        if (input.type !== 'checkbox' && input.value.trim() === '') {
+            allFilled = false;
         }
+    });
+
+    if (!allFilled) {
+        showToast(); // Mostrar el toast si hay campos vacíos
+        return; // No avanzar si hay campos vacíos
+    }
+
+    if (currentStep < steps.length - 1) {
+        currentStep++;
+        showStep(currentStep);
+    }
+}
+
+function showToast() {
+    const toast = document.getElementById('toast');
+    toast.style.display = 'block'; // Mostrar el toast
+    setTimeout(() => {
+        toast.style.display = 'none'; // Ocultar el toast después de 3 segundos
+    }, 3000);
+}
+
+function hideToast() {
+    const toast = document.getElementById('toast');
+    toast.style.display = 'none'; // Ocultar el toast manualmente
+}
 
         function prevStep() {
             if (currentStep > 0) {
@@ -242,6 +341,7 @@
                 showStep(currentStep);
             }
         }
+
     </script>
         <script>
             fetch('../src/components/header.html')

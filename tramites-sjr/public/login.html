@@ -63,6 +63,11 @@
         .register-link:hover, .forgot-link:hover {
             text-decoration: underline;
         }
+        .toast {
+    background-color: #f8d7da; /* Color de fondo */
+    color: #721c24; /* Color del texto */
+    border: 1px solid #f5c6cb; /* Borde */
+}
 
         /* Eliminar contorno azul en navbar y footer */
         #header, #footer {
@@ -99,8 +104,44 @@
         <a href="forgot-password.html" class="forgot-link">¿Olvidaste tu contraseña?</a>
         <a href="register.html" class="register-link">¿No tienes cuenta? Regístrate aquí</a>
     </div>
+    <div id="toast" class="toast" style="position: fixed; top: 20px; right: 20px; z-index: 1050; display: none;">
+        <div class="toast-header">
+            <strong class="me-auto">Advertencia</strong>
+            <button type="button" class="btn-close" onclick="hideToast()"></button>
+        </div>
+        <div class="toast-body">
+            Por favor, completa todos los campos requeridos.
+        </div>
+    </div>
 
     <div id="footer">© 2024 Trámites Digitales</div>
+    <script>
+        function login() {
+    const username = document.getElementById('username').value.trim();
+    const password = document.getElementById('password').value.trim();
+
+    if (username === '' || password === '') {
+        showToast(); // Mostrar el toast si hay campos vacíos
+        return; // No continuar si hay campos vacíos
+    }
+
+    // Aquí puedes agregar la lógica para el inicio de sesión
+    console.log('Iniciando sesión con:', username, password);
+}
+
+function showToast() {
+    const toast = document.getElementById('toast');
+    toast.style.display = 'block'; // Mostrar el toast
+    setTimeout(() => {
+        toast.style.display = 'none'; // Ocultar el toast después de 3 segundos
+    }, 3000);
+}
+
+function hideToast() {
+    const toast = document.getElementById('toast');
+    toast.style.display = 'none'; // Ocultar el toast manualmente
+}
+    </script>
 
     <script>
         fetch('../src/components/header.html')
