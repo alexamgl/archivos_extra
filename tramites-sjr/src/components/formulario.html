@@ -51,6 +51,48 @@
             margin-top: 20px;
             display: none; /* Oculto por defecto */
         }
+
+        /* Estilos para el formulario */
+        .upload-form {
+            display: none; /* Oculto por defecto */
+            margin-top: 20px;
+            text-align: center;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .upload-card {
+            background-color: #f9f9f9; /* Color de fondo más claro */
+            border: 1px solid #007bff; /* Bordes de color azul */
+            border-radius: 8px;
+            padding: 30px; /* Mayor padding */
+            width: calc(30% - 20px); /* Ajustar el ancho */
+            margin: 20px auto; /* Centrando el card */
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra más suave */
+            transition: transform 0.3s, box-shadow 0.3s; /* Efecto de hover */
+        }
+
+        .upload-card:hover {
+            transform: scale(1.05); /* Escala al pasar el mouse */
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Sombra más pronunciada */
+        }
+
+        .upload-card input[type="file"] {
+            margin-bottom: 10px;
+            padding: 10px; /* Padding para el input */
+            border-radius: 5px; /* Bordes redondeados */
+            border: 1px solid #ccc; /* Borde del input */
+            width: 100%; /* Ancho completo */
+        }
+
+        .upload-card input[type="checkbox"] {
+            margin: 10px 0;
+        }
+
+        .upload-card .btn {
+            margin-top: 10px; /* Espaciado entre el checkbox y el botón */
+        }
     </style>
 </head>
 
@@ -150,23 +192,36 @@
                 <!-- Sección de tarjetas -->
                 <div id="card-section" class="card-container">
                     <div class="card">
-                        <h3>Pago de inscripción</h3>
-                        <button class="btn">Realizar pago</button>
+                        <h3>Adulto Mayor</h3>
+                        <button class="btn" onclick="showUploadForm('adulto')">Realizar pago</button>
                     </div>
                     <div class="card">
-                        <h3>Pago de reinscripción</h3>
-                        <button class="btn">Realizar pago</button>
+                        <h3>Estudiante</h3>
+                        <button class="btn" onclick="showUploadForm('estudiante')">Realizar pago</button>
                     </div>
                     <div class="card">
-                        <h3>Solicitud de certificado</h3>
-                        <button class="btn">Solicitar</button>
+                        <h3>Trabajador</h3>
+                        <button class="btn" onclick="showUploadForm('trabajador')">Realizar pago</button>
                     </div>
                     <div class="card">
-                        <h3>Consulta de trámites</h3>
-                        <button class="btn">Consultar</button>
+                        <h3>Menor de edad</h3>
+                        <button class="btn" onclick="showUploadForm('menor')">Realizar pago</button>
                     </div>
                 </div>
                 <button class="back-button" id="back-button" onclick="goBack()">Regresar a trámites</button>
+
+                <!-- Formulario de carga en tarjeta -->
+                <div id="upload-section" class="upload-form">
+                    <div class="upload-card">
+                        <h3>Subir archivo PDF</h3>
+                        <input type="file" id="file-upload" accept=".pdf">
+                        <div>
+                            <input type="checkbox" id="agreement">
+                            <h5>Acepto los términos y condiciones</h5>
+                        </div>
+                        <button class="btn" onclick="uploadFile()">Aceptar</button>
+                    </div>
+                </div>
             </div>
             <div id="mis-datos-section" style="display: none;">
                 <h1>Mis datos</h1>
@@ -186,18 +241,38 @@
             document.getElementById('table-section').style.display = 'none'; // Oculta la tabla
             document.getElementById('card-section').style.display = 'flex'; // Muestra las tarjetas
             document.getElementById('back-button').style.display = 'block'; // Muestra el botón de regresar
+            document.getElementById('upload-section').style.display = 'none'; // Oculta el formulario
         }
 
         function goBack() {
             document.getElementById('table-section').style.display = 'block'; // Muestra la tabla
             document.getElementById('card-section').style.display = 'none'; // Oculta las tarjetas
             document.getElementById('back-button').style.display = 'none'; // Oculta el botón de regresar
+            document.getElementById('upload-section').style.display = 'none'; // Oculta el formulario
         }
 
-        // Otras funciones necesarias
+        function showUploadForm(tipo) {
+            document.getElementById('upload-section').style.display = 'block'; // Muestra el formulario
+            // Puedes agregar lógica adicional aquí si necesitas personalizar el formulario según el tipo
+        }
+
+        function uploadFile() {
+            const fileInput = document.getElementById('file-upload');
+            const agreementCheckbox = document.getElementById('agreement');
+            if (fileInput.files.length > 0 && agreementCheckbox.checked) {
+                const fileName = fileInput.files[0].name;
+                alert(`El archivo "${fileName}" subido con éxito!`);
+                // Aquí puedes agregar la lógica para manejar el archivo
+                goBack(); // Regresar a la vista anterior después de la carga
+            } else {
+                alert('Por favor selecciona un archivo y acepta los términos.');
+            }
+        }
+
         function VerificaToken() {
             document.getElementById('card-section').style.display = 'none'; // Asegura que las tarjetas están ocultas al cargar
             document.getElementById('back-button').style.display = 'none'; // Asegura que el botón de regresar está oculto
+            document.getElementById('upload-section').style.display = 'none'; // Asegura que el formulario está oculto
         }
     </script>
 </body>
