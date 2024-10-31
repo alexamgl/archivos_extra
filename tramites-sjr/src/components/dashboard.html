@@ -6,185 +6,275 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link href='https://unpkg.com/boxicons@2.0.9/css/boxicons.min.css' rel='stylesheet'>
     <link rel="stylesheet" href="css/dashboard.css">
-	<style>
-		/* Estilos para el modal */
-		.modal {
-			display: none; /* Oculto por defecto */
-			position: fixed; 
-			z-index: 1000; /* Mostrar sobre otros elementos */
-			left: 0;
-			top: 0;
-			width: 100%;
-			height: 100%;
-			background-color: rgba(0, 0, 0, 0.5); /* Fondo semi-transparente */
-		}
-		
-		.modal-content {
-			background-color: #fefefe;
-			margin: 10% auto;
-			padding: 20px;
-			border: 1px solid #888;
-			width: 80%;
-			max-width: 500px;
-			text-align: center;
-			border-radius: 8px;
-		}
-		
-		.close {
-			color: #aaa;
-			float: right;
-			font-size: 28px;
-			font-weight: bold;
-			cursor: pointer;
-		}
-		
-		.close:hover,
-		.close:focus {
-			color: black;
-			text-decoration: none;
-			cursor: pointer;
-		}
-		.button-group {
+    <style>
+        /* Estilos para las tarjetas */
+        .card-container {
+            display: none; /* Oculto por defecto */
+            margin-top: 20px;
             display: flex;
             justify-content: space-between;
-            margin-top: 20px;
+            flex-wrap: wrap;
         }
-		</style>
+
+        .card {
+            background-color: #fefefe;
+            border: 1px solid #888;
+            border-radius: 8px;
+            padding: 20px;
+            width: calc(25% - 20px);
+            margin: 10px;
+            text-align: center;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .card h3 {
+            margin: 0 0 10px;
+        }
+
+        .card button,
+        .back-button {
+            padding: 10px 15px;
+            background-color: #007bff; /* Color del botón */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        .card button:hover,
+        .back-button:hover {
+            background-color: #0056b3; /* Color al pasar el mouse */
+        }
+
+        .back-button {
+            margin-top: 20px;
+            display: none; /* Oculto por defecto */
+        }
+
+        /* Estilos para el formulario */
+        .upload-form {
+            display: none; /* Oculto por defecto */
+            margin-top: 20px;
+            text-align: center;
+            flex-direction: column;
+            width: 100%;
+        }
+
+        .upload-card {
+            background-color: #f9f9f9; /* Color de fondo más claro */
+            border: 1px solid #007bff; /* Bordes de color azul */
+            border-radius: 8px;
+            padding: 30px; /* Mayor padding */
+            width: calc(30% - 20px); /* Ajustar el ancho */
+            margin: 20px auto; /* Centrando el card */
+            text-align: center;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2); /* Sombra más suave */
+            transition: transform 0.3s, box-shadow 0.3s; /* Efecto de hover */
+        }
+
+        .upload-card:hover {
+            transform: scale(1.05); /* Escala al pasar el mouse */
+            box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3); /* Sombra más pronunciada */
+        }
+
+        .upload-card input[type="file"] {
+            margin-bottom: 10px;
+            padding: 10px; /* Padding para el input */
+            border-radius: 5px; /* Bordes redondeados */
+            border: 1px solid #ccc; /* Borde del input */
+            width: 100%; /* Ancho completo */
+        }
+
+        .upload-card input[type="checkbox"] {
+            margin: 10px 0;
+        }
+
+        .upload-card .btn {
+            margin-top: 10px; /* Espaciado entre el checkbox y el botón */
+        }
+    </style>
 </head>
 
 <body onload="VerificaToken()">
     <!-- SIDEBAR -->
-	<section id="sidebar">
-		<a href="#" class="brand">
-			<!--colocar imagen del municipio-->
-		</a>
-		<ul class="side-menu top">
-			<li class="active">
-				<a href="#" id="inicio-link" data-section="inicio-section">
-					<i class='bx bxs-dashboard' ></i>
-					<span class="text">Inicio</span>
-				</a>
-			</li>
-			<li>
-				<a href="#" data-section="mis-datos-section">
-					<i class='bx bxs-user'></i>
-					<span class="text">Mis datos</span>
-				</a>
-			</li>
-		</ul>
-		
-			
-		
-		<ul class="side-menu">
-			<li>
-				<a href="#" class="logout">
-					<i class='bx bxs-log-out-circle' ></i>
-					<span class="text">Logout</span>
-				</a>
-			</li>
-		</ul>
-	</section>
-	<!-- SIDEBAR -->
+    <section id="sidebar">
+        <a href="#" class="brand">
+            <!--colocar imagen del municipio-->
+        </a>
+        <ul class="side-menu top">
+            <li class="active">
+                <a href="#" id="inicio-link" data-section="inicio-section">
+                    <i class='bx bxs-dashboard'></i>
+                    <span class="text">Inicio</span>
+                </a>
+            </li>
+            <li>
+                <a href="#" data-section="mis-datos-section">
+                    <i class='bx bxs-user'></i>
+                    <span class="text">Mis datos</span>
+                </a>
+            </li>
+        </ul>
 
+        <ul class="side-menu">
+            <li>
+                <a href="#" class="logout">
+                    <i class='bx bxs-log-out-circle'></i>
+                    <span class="text">Logout</span>
+                </a>
+            </li>
+        </ul>
+    </section>
+    <!-- SIDEBAR -->
 
+    <!-- CONTENT -->
+    <section id="content">
+        <!-- NAVBAR -->
+        <nav>
+            <i class='bx bx-menu'></i>
+            <a href="#" class="nav-link">Categories</a>
+            <form action="#">
+                <div class="form-input">
+                    <input type="search" placeholder="Search...">
+                    <button type="submit" class="search-btn"><i class='bx bx-search'></i></button>
+                </div>
+            </form>
+            <input type="checkbox" id="switch-mode" hidden>
+            <label for="switch-mode" class="switch-mode"></label>
+            <a href="#" class="notification">
+                <i class='bx bxs-bell'></i>
+                <span class="num">8</span>
+            </a>
+            <a href="#" class="profile">
+                <img src="/public/img/logo_municipio_2024.png">
+            </a>
+        </nav>
+        <!-- NAVBAR -->
 
-	<!-- CONTENT -->
-	<section id="content">
-		<!-- NAVBAR -->
-		<nav>
-			<i class='bx bx-menu' ></i>
-			<a href="#" class="nav-link">Categories</a>
-			<form action="#">
-				<div class="form-input">
-					<input type="search" placeholder="Search...">
-					<button type="submit" class="search-btn"><i class='bx bx-search' ></i></button>
-				</div>
-			</form>
-			<input type="checkbox" id="switch-mode" hidden>
-			<label for="switch-mode" class="switch-mode"></label>
-			<a href="#" class="notification">
-				<i class='bx bxs-bell' ></i>
-				<span class="num">8</span>
-			</a>
-			<a href="#" class="profile">
-				<img src="/public/img/logo_municipio_2024.png">
-			</a>
-		</nav>
-		<!-- NAVBAR -->
+        <!-- MAIN -->
+        <main id="main-content">
+            <div class="head-title">
+                <a href="#" class="btn-download">
+                    <i class='bx bxs-cloud-download'></i>
+                    <span class="text">Descargar </span>
+                </a>
+            </div>
+            <div id="inicio-section">
+                <div class="table-data" id="table-section">
+                    <div class="order">
+                        <div class="head">
+                            <h3>Tramites y servicios disponibles</h3>
+                            <i class='bx bx-search'></i>
+                            <i class='bx bx-filter'></i>
+                        </div>
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Tramite</th>
+                                    <th>Acción</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>
+                                        <p>Pago de albercas</p>
+                                    </td>
+                                    <td>
+                                        <button class="btn" onclick="showCards()">Ver trámite</button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+                
+                <!-- Sección de tarjetas -->
+                <div id="card-section" class="card-container">
+                    <div class="card">
+                        <h3>Adulto Mayor</h3>
+                        <button class="btn" onclick="showUploadForm('adulto')">Realizar pago</button>
+                    </div>
+                    <div class="card">
+                        <h3>Estudiante</h3>
+                        <button class="btn" onclick="showUploadForm('estudiante')">Realizar pago</button>
+                    </div>
+                    <div class="card">
+                        <h3>Trabajador</h3>
+                        <button class="btn" onclick="showUploadForm('trabajador')">Realizar pago</button>
+                    </div>
+                    <div class="card">
+                        <h3>Menor de edad</h3>
+                        <button class="btn" onclick="showUploadForm('menor')">Realizar pago</button>
+                    </div>
+                </div>
+                <button class="back-button" id="back-button" onclick="goBack()">Regresar a trámites</button>
 
-		<!-- MAIN -->
-		<main id="main-content">
-			<div class="head-title">
-				<a href="#" class="btn-download">
-					<i class='bx bxs-cloud-download' ></i>
-					<span class="text">Descargar </span>
-				</a>
-			</div>
-			<div id="inicio-section">
-				
-				<div class="table-data">
-					<div class="order">
-						<div class="head">
-							<h3>Tramites y servicios disponibles</h3>
-							<i class='bx bx-search' ></i>
-							<i class='bx bx-filter' ></i>
-						</div>
-						<table>
-							<thead>
-								<tr>
-									<th>Tramite</th>
-									<th>Acción</th>
-								</tr>
-							</thead>
-							<tbody>
-								<tr>
-									<td>
-										<p>Pago de albercas</p>
-									</td>
-									<td>
-										<button class="btn" onclick="openModal()">Ver trámite</button>
-									</td>
-								</tr>
-							</tbody>
-						</table>
-					</div>
-				</div>
-			</div>
-			<div id="mis-datos-section" style="display: none;">
-				<h1>Mis datos</h1>
-				<p>Esta es la seccion de mis datos</p>
-			</div>
-			<div id="logout-section" style="display: none;">
-				<h1>Logout</h1>
-				<p>Esta es la seccion de logout</p>
-			</div>
-			<!--
-			
-			
-			-->
-			
-		</main>
-		<!-- MAIN -->
-		<div id="myModal" class="modal">
-			<div class="modal-content">
-				<span class="close" onclick="closeModal()">&times;</span>
-				<h2>Detalles del Trámite</h2>
-				<div class=".button-group">
-					<button class="btn">Pago de inscripción</button>
-					<button class="btn">Pago de reinscripción</button>
-				</div>
-				<div>
-					
-				</div>
-				<div>
-					
-				</div>
-			</div>
-		</div>
-	</section>
-	<!-- CONTENT -->
+                <!-- Formulario de carga en tarjeta -->
+                <div id="upload-section" class="upload-form">
+                    <div class="upload-card">
+                        <h3>Subir archivo PDF</h3>
+                        <input type="file" id="file-upload" accept=".pdf">
+                        <div>
+                            <input type="checkbox" id="agreement">
+                            <h5>Acepto los términos y condiciones</h5>
+                        </div>
+                        <button class="btn" onclick="uploadFile()">Aceptar</button>
+                    </div>
+                </div>
+            </div>
+            <div id="mis-datos-section" style="display: none;">
+                <h1>Mis datos</h1>
+                <p>Esta es la seccion de mis datos</p>
+            </div>
+            <div id="logout-section" style="display: none;">
+                <h1>Logout</h1>
+                <p>Esta es la seccion de logout</p>
+            </div>
+        </main>
+        <!-- MAIN -->
+    </section>
+    <!-- CONTENT -->
 
-	<script src="script.js"></script>
+    <script>
+        function showCards() {
+            document.getElementById('table-section').style.display = 'none'; // Oculta la tabla
+            document.getElementById('card-section').style.display = 'flex'; // Muestra las tarjetas
+            document.getElementById('back-button').style.display = 'block'; // Muestra el botón de regresar
+            document.getElementById('upload-section').style.display = 'none'; // Oculta el formulario
+        }
+
+        function goBack() {
+            document.getElementById('table-section').style.display = 'block'; // Muestra la tabla
+            document.getElementById('card-section').style.display = 'none'; // Oculta las tarjetas
+            document.getElementById('back-button').style.display = 'none'; // Oculta el botón de regresar
+            document.getElementById('upload-section').style.display = 'none'; // Oculta el formulario
+        }
+
+        function showUploadForm(tipo) {
+            document.getElementById('upload-section').style.display = 'block'; // Muestra el formulario
+            // Puedes agregar lógica adicional aquí si necesitas personalizar el formulario según el tipo
+        }
+
+        function uploadFile() {
+            const fileInput = document.getElementById('file-upload');
+            const agreementCheckbox = document.getElementById('agreement');
+            if (fileInput.files.length > 0 && agreementCheckbox.checked) {
+                const fileName = fileInput.files[0].name;
+                alert(`El archivo "${fileName}" subido con éxito!`);
+                // Aquí puedes agregar la lógica para manejar el archivo
+                goBack(); // Regresar a la vista anterior después de la carga
+            } else {
+                alert('Por favor selecciona un archivo y acepta los términos.');
+            }
+        }
+
+        function VerificaToken() {
+            document.getElementById('card-section').style.display = 'none'; // Asegura que las tarjetas están ocultas al cargar
+            document.getElementById('back-button').style.display = 'none'; // Asegura que el botón de regresar está oculto
+            document.getElementById('upload-section').style.display = 'none'; // Asegura que el formulario está oculto
+        }
+    </script>
 </body>
 
 </html>
